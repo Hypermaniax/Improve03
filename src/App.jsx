@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
-import Err from "./components/ModalErr";
 import Main from "./components/Main";
+import Modal from "./components/Modal";
 
 function App() {
   const [recomendation, setRecomendation] = useState(undefined);
@@ -10,8 +10,9 @@ function App() {
   const [pickGenre, setPickGenre] = useState(undefined);
   const [genre, setGenre] = useState(undefined);
 
-  const inputHeader = useRef(undefined);
-  const valueHeader = useRef(undefined);
+  const inputHeader = useRef();
+  const valueHeader = useRef();
+  const modal = useRef();
 
   const onSearch = useCallback(() => {
     if (!search) return;
@@ -21,7 +22,16 @@ function App() {
       const resSearch = await fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=${api}&query=${search}`
       );
+      // console.log( resSearch.status === 404);
+
       const jsonSearch = await resSearch.json();
+      console.log(jsonSearch.results.length === 0);
+
+      if (jsonSearch.results.length === 0) {
+        modal.current.open();
+        document.body.style.overflow = "hidden";
+        return;
+      }
 
       setGotSearch(() => {
         return { search: jsonSearch.results };
@@ -32,9 +42,9 @@ function App() {
   const onSelectGenre = useCallback(() => {
     (async () => {
       const api = import.meta.env.VITE_API_KEY;
-      const type = valueHeader.current.selectedOptions[0];;
+      const type = valueHeader.current.selectedOptions[0];
       const atribute = type ? type.getAttribute("name") : "";
-      
+
       const reqGenre = await fetch(
         `https://api.themoviedb.org/3/discover/movie?api_key=${api}&with_genres=${pickGenre}`
       );
@@ -82,9 +92,10 @@ function App() {
     }
     setSearch(inputHeader.current.value);
   }
-  
+
   return (
     <>
+      <Modal ref={modal} />
       <Header
         handleSearch={handleSearch}
         valueRef={valueHeader}

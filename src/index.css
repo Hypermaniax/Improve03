@@ -7,3 +7,7 @@ body{
     font-family: "Poppins", sans-serif;
 
 }
+::backdrop {
+    background-color: black;
+    opacity: 0.5;
+  }
