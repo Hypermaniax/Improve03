@@ -12,9 +12,12 @@ function App() {
 
   const inputHeader = useRef();
   const valueHeader = useRef();
+  const headerRef = { inputHeader, valueHeader };
+
   const modal = useRef();
 
   const onSearch = useCallback(() => {
+    // console.log(inputHeader.current.value);
     if (!search) return;
     (async () => {
       const api = import.meta.env.VITE_API_KEY;
@@ -95,11 +98,10 @@ function App() {
 
   return (
     <>
-      <Modal ref={modal} />
+      <Modal ref={modal} inputHeader={inputHeader.current} />
       <Header
         handleSearch={handleSearch}
-        valueRef={valueHeader}
-        inputRef={inputHeader}
+        ref={headerRef}
         pick={(e) => setPickGenre(e.target.value)}
       />
       {!!pickGenre && <Main data={genre} />}

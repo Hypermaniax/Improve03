@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import movie from "../assets/movie.svg";
 import search from "../assets/search.svg";
 
-export default function Header({ handleSearch, inputRef, pick, valueRef }) {
+const Header = forwardRef(function Header({ handleSearch, pick } ,ref) {
   const [genre, setGenre] = useState(undefined);
 
   useEffect(() => {
@@ -24,12 +24,12 @@ export default function Header({ handleSearch, inputRef, pick, valueRef }) {
         <select
           id="Genre"
           onClick={pick}
-          ref={valueRef}
+          ref={ref.valueHeader}
           className="outline-none rounded-lg "
         >
           {!!genre &&
             genre.map((item, index) => (
-              <option key={index} value={item.id}  name={item.name}>
+              <option key={index} value={item.id} name={item.name}>
                 {item.name}
               </option>
             ))}
@@ -39,7 +39,7 @@ export default function Header({ handleSearch, inputRef, pick, valueRef }) {
         <input
           type="text"
           placeholder="Search"
-          ref={inputRef}
+          ref={ref.inputHeader}
           className="p-1  rounded-l-xl outline-none"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -56,4 +56,5 @@ export default function Header({ handleSearch, inputRef, pick, valueRef }) {
       </div>
     </header>
   );
-}
+});
+export default Header
