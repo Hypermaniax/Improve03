@@ -16,7 +16,7 @@ const Modal = forwardRef(function Modal({ text, inputHeader },ref) {
   return createPortal(
     <dialog ref={modal} className="md:w-1/5 p-5 text-center  rounded-3xl">
       <img src={file} className="h-52 mx-auto" alt="" />
-      <h3></h3>
+      <h3>{text}</h3>
       <form action="dialog" >
         <button className="bg-orange-30  outline-none bg-orange-300 w-2/4 mx-auto p-1 rounded-md">okay</button>
       </form>

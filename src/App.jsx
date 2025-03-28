@@ -9,33 +9,28 @@ function App() {
   const [gotSearch, setGotSearch] = useState(undefined);
   const [pickGenre, setPickGenre] = useState(undefined);
   const [genre, setGenre] = useState(undefined);
+  const [modalText,setModalText] =useState(undefined)
 
   const inputHeader = useRef();
   const valueHeader = useRef();
   const headerRef = { inputHeader, valueHeader };
 
   const modal = useRef();
-
+  
   const onSearch = useCallback(() => {
-    // console.log(inputHeader.current.value);
     if (!search) return;
     (async () => {
       const api = import.meta.env.VITE_API_KEY;
-
       const resSearch = await fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=${api}&query=${search}`
       );
-      // console.log( resSearch.status === 404);
-
       const jsonSearch = await resSearch.json();
-      console.log(jsonSearch.results.length === 0);
-
       if (jsonSearch.results.length === 0) {
         modal.current.open();
         document.body.style.overflow = "hidden";
+        setModalText(`There is no movie or film of you Search ${inputHeader.current.value}`)
         return;
       }
-
       setGotSearch(() => {
         return { search: jsonSearch.results };
       });
@@ -98,7 +93,7 @@ function App() {
 
   return (
     <>
-      <Modal ref={modal} inputHeader={inputHeader.current} />
+      <Modal ref={modal} text={modalText} />
       <Header
         handleSearch={handleSearch}
         ref={headerRef}
