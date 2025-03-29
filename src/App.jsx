@@ -87,8 +87,6 @@ function App() {
   }, [onSearch]);
 
   function handleSearch() {
-    console.log("d");
-
     if (inputHeader.current.value === "") {
       return inputHeader.current.focus();
     }
