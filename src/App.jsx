@@ -9,14 +9,14 @@ function App() {
   const [gotSearch, setGotSearch] = useState(undefined);
   const [pickGenre, setPickGenre] = useState(undefined);
   const [genre, setGenre] = useState(undefined);
-  const [modalText,setModalText] =useState(undefined)
+  const [modalText, setModalText] = useState(undefined);
 
   const inputHeader = useRef();
   const valueHeader = useRef();
   const headerRef = { inputHeader, valueHeader };
 
   const modal = useRef();
-  
+
   const onSearch = useCallback(() => {
     if (!search) return;
     (async () => {
@@ -28,7 +28,9 @@ function App() {
       if (jsonSearch.results.length === 0) {
         modal.current.open();
         document.body.style.overflow = "hidden";
-        setModalText(`There is no movie or film of you Search ${inputHeader.current.value}`)
+        setModalText(
+          `There is no movie or film of you Search ${inputHeader.current.value}`
+        );
         return;
       }
       setGotSearch(() => {
@@ -85,6 +87,8 @@ function App() {
   }, [onSearch]);
 
   function handleSearch() {
+    console.log("d");
+
     if (inputHeader.current.value === "") {
       return inputHeader.current.focus();
     }
@@ -93,7 +97,14 @@ function App() {
 
   return (
     <>
-      <Modal ref={modal} text={modalText} />
+      <Modal
+        ref={modal}
+        text={modalText}
+        onClick={() => {
+          modal.current.close();
+          inputHeader.current.value = "";
+        }}
+      />
       <Header
         handleSearch={handleSearch}
         ref={headerRef}
